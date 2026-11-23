@@ -157,6 +157,13 @@ export const EditorPage: React.FC = () => {
             'image/svg+xml'
           );
         }}
+        onExportPNG={() => {
+          if (!activeScheme) return;
+          exportService.exportToPNG(activeScheme);
+        }}
+        onExportPDF={() => {
+          exportService.exportToPDF();
+        }}
         onExportJSON={() => {
           if (!activeScheme) return;
           exportService.downloadFile(

@@ -33,6 +33,42 @@ export class ExportService {
 </svg>`;
   }
 
+  exportToPNG(scheme: Scheme): void {
+    const svg = this.exportToSVG(scheme);
+    const dims = FORMAT_DIMENSIONS[scheme.format];
+    const img = new Image();
+    const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = dims.width;
+      canvas.height = dims.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const pngUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = pngUrl;
+            a.download = `${scheme.name}.png`;
+            a.click();
+            URL.revokeObjectURL(pngUrl);
+          }
+        }, 'image/png');
+      }
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  }
+
+  exportToPDF(): void {
+    window.print();
+  }
+
   downloadFile(content: string, filename: string, mimeType: string): void {
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
