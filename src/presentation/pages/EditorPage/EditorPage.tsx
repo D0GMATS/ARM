@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import { Point } from '@/domain/value-objects/Point';
 import { ObjectType } from '@/domain/types/ObjectType';
 import { GraphicObject } from '@/domain/entities/GraphicObject';
+import { Panel } from '@/domain/entities/Panel';
+import { Scheme } from '@/domain/entities/Scheme';
+import { Project } from '@/domain/entities/Project';
 import { useContainer } from '@/infrastructure/di/container';
 import { LoadProjectUseCase } from '@/application/use-cases/project/LoadProjectUseCase';
 import { SaveProjectUseCase } from '@/application/use-cases/project/SaveProjectUseCase';
@@ -180,6 +183,33 @@ export const EditorPage: React.FC = () => {
             project={project}
             activeSchemeId={activeSchemeId}
             onSelectScheme={openScheme}
+            onAddPanel={() => {
+              if (!project) return;
+              const panelId = `panel-${Date.now()}`;
+              const schemeId = `scheme-${Date.now()}`;
+              const newScheme = new Scheme(schemeId, panelId, 'Схема 1');
+              const newPanel = new Panel(
+                panelId,
+                project.id,
+                `ЩО-${project.panels.length + 1}`,
+                [newScheme]
+              );
+              setProject(project.addPanel(newPanel));
+              openScheme(schemeId);
+            }}
+            onAddScheme={(panelId) => {
+              if (!project) return;
+              const schemeId = `scheme-${Date.now()}`;
+              const nextPanels = project.panels.map((p) => {
+                if (p.id !== panelId) return p;
+                const newScheme = new Scheme(schemeId, panelId, `Схема ${p.schemes.length + 1}`);
+                return p.addScheme(newScheme);
+              });
+              setProject(
+                new Project(project.id, project.name, project.description, nextPanels)
+              );
+              openScheme(schemeId);
+            }}
           />
           <ObjectLibrary onAddObject={handleAddObject} />
         </aside>
