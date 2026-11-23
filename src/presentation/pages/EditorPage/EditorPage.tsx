@@ -24,6 +24,7 @@ import { TabsBar } from '@/presentation/widgets/TabsBar/TabsBar';
 import { SchemeCanvas } from '@/presentation/widgets/SchemeCanvas/SchemeCanvas';
 import { PropertyInspector } from '@/presentation/widgets/PropertyInspector/PropertyInspector';
 import { ValidationPanel } from '@/presentation/widgets/ValidationPanel/ValidationPanel';
+import { useKeyboardShortcuts } from '@/presentation/shared/hooks/useKeyboardShortcuts';
 import styles from './EditorPage.module.css';
 
 export const EditorPage: React.FC = () => {
@@ -134,6 +135,23 @@ export const EditorPage: React.FC = () => {
     const result = validateSchemeUseCase.execute(activeScheme);
     setValidationIssues(result.issues);
   };
+
+  useKeyboardShortcuts({
+    onSave: () => void handleSave(),
+    onUndo: () => {
+      if (!activeScheme) return;
+      const prev = history.undo(activeScheme);
+      if (prev) updateActiveScheme(prev);
+    },
+    onRedo: () => {
+      if (!activeScheme) return;
+      const next = history.redo(activeScheme);
+      if (next) updateActiveScheme(next);
+    },
+    onDelete: () => {
+      if (selectedObjectId) handleDeleteObject(selectedObjectId);
+    },
+  });
 
   return (
     <div className={styles.layout}>
