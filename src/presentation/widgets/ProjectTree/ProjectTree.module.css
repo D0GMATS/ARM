@@ -1,0 +1,60 @@
+.tree {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.heading {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.projectName {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.panelItem {
+  margin-left: 12px;
+  margin-bottom: 4px;
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 0;
+}
+
+.schemeBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-left: 14px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.schemeBtn:hover {
+  background: #ecf0f1;
+}
+
+.schemeActive {
+  background: rgba(26, 187, 156, 0.15);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
