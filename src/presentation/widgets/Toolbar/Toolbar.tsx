@@ -24,6 +24,8 @@ interface ToolbarProps {
   onValidate: () => void;
   onExportSVG: () => void;
   onExportJSON: () => void;
+  onExportPNG: () => void;
+  onExportPDF: () => void;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -35,6 +37,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onValidate,
   onExportSVG,
   onExportJSON,
+  onExportPNG,
+  onExportPDF,
 }) => {
   const { activeTool, setActiveTool, zoom, setZoom, lastSavedAt } = useEditorStore();
 
@@ -95,6 +99,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </button>
         <button className={styles.btn} onClick={onExportSVG} title="Экспорт в SVG">
           <Download size={14} /> SVG
+        </button>
+        <button className={styles.btn} onClick={onExportPNG} title="Экспорт в PNG">
+          <Download size={14} /> PNG
+        </button>
+        <button className={styles.btn} onClick={onExportPDF} title="Экспорт в PDF">
+          <Download size={14} /> PDF
         </button>
         <button className={styles.btn} onClick={onExportJSON} title="Экспорт в JSON">
           <Download size={14} /> JSON
