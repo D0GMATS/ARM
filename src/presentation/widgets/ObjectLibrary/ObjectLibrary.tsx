@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ObjectType } from '@/domain/types/ObjectType';
 import { UGO_CATALOG } from '@/domain/services/ObjectCatalogService';
+import { UgoPreview } from './UgoPreview';
 import styles from './ObjectLibrary.module.css';
 
 interface ObjectLibraryProps {
@@ -37,7 +38,10 @@ export const ObjectLibrary: React.FC<ObjectLibraryProps> = ({ onAddObject }) => 
             onClick={() => onAddObject(item.type)}
             title={`Добавить ${item.label}`}
           >
-            <span>{item.label}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <UgoPreview type={item.type} />
+              <span>{item.label}</span>
+            </span>
             <span className={styles.prefix}>{item.defaultPrefix}</span>
           </button>
         ))}
