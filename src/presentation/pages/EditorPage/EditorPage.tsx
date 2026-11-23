@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Point } from '@/domain/value-objects/Point';
 import { ObjectType } from '@/domain/types/ObjectType';
@@ -136,6 +136,8 @@ export const EditorPage: React.FC = () => {
     setValidationIssues(result.issues);
   };
 
+  const clipboardRef = useRef<GraphicObject | null>(null);
+
   useKeyboardShortcuts({
     onSave: () => void handleSave(),
     onUndo: () => {
@@ -150,6 +152,19 @@ export const EditorPage: React.FC = () => {
     },
     onDelete: () => {
       if (selectedObjectId) handleDeleteObject(selectedObjectId);
+    },
+    onCopy: () => {
+      if (selectedObject) clipboardRef.current = selectedObject;
+    },
+    onPaste: () => {
+      if (!activeScheme || !clipboardRef.current) return;
+      const src = clipboardRef.current;
+      const next = addObjectUseCase.execute({
+        scheme: activeScheme,
+        type: src.type,
+        position: new Point(src.position.x + 40, src.position.y + 40),
+      });
+      commitScheme(next);
     },
   });
 

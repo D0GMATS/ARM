@@ -5,6 +5,8 @@ interface KeyboardShortcutHandlers {
   onUndo?: () => void;
   onRedo?: () => void;
   onDelete?: () => void;
+  onCopy?: () => void;
+  onPaste?: () => void;
 }
 
 export function useKeyboardShortcuts(handlers: KeyboardShortcutHandlers): void {
@@ -32,6 +34,12 @@ export function useKeyboardShortcuts(handlers: KeyboardShortcutHandlers): void {
       } else if (isMod && e.key.toLowerCase() === 'y') {
         e.preventDefault();
         handlers.onRedo?.();
+      } else if (isMod && e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+        handlers.onCopy?.();
+      } else if (isMod && e.key.toLowerCase() === 'v') {
+        e.preventDefault();
+        handlers.onPaste?.();
       } else if (e.key === 'Delete' || e.key === 'Backspace') {
         handlers.onDelete?.();
       }
